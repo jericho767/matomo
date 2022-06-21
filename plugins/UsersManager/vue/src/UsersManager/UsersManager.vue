@@ -56,7 +56,7 @@
           :is-loading-users="isLoadingUsers"
           :current-user-role="currentUserRole"
           :access-levels="accessLevels"
-          :filter-access-levels="actualFilterAccessLevels"
+          :filter-access-levels="filterAccessLevels"
           :search-params="searchParams"
           :users="users"
           :total-entries="totalEntries"
@@ -70,7 +70,7 @@
         :user="userBeingEdited"
         :current-user-role="currentUserRole"
         :access-levels="accessLevels"
-        :filter-access-levels="actualFilterAccessLevels"
+        :filter-access-levels="filterAccessLevels"
         :initial-site-id="initialSiteId"
         :initial-site-name="initialSiteName"
         @updated="userBeingEdited = $event.user"
@@ -336,14 +336,6 @@ export default defineComponent({
 
       this.isEditing = true;
       this.userBeingEdited = null;
-    },
-  },
-  computed: {
-    actualFilterAccessLevels() {
-      if (this.currentUserRole === 'superuser') {
-        return [...this.filterAccessLevels, { key: 'superuser', value: 'Superuser' }];
-      }
-      return this.filterAccessLevels;
     },
   },
 });
