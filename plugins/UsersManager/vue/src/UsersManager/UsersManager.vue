@@ -233,7 +233,6 @@ export default defineComponent({
             userLogin: login,
             capabilities: role,
             idSites: this.searchParams.idSite,
-            ignoreSuperusers: 1,
           }));
         } else {
           requests = userLogins.map((login) => ({
@@ -241,7 +240,6 @@ export default defineComponent({
             userLogin: login,
             access: role,
             idSites: this.searchParams.idSite,
-            ignoreSuperusers: 1,
           }));
         }
 
