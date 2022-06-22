@@ -276,7 +276,9 @@
                     showAccessChangeConfirm();"
                   :disabled="user.role === 'superuser'"
                   uicontrol="select"
-                  :options="user.login !== 'anonymous' ? accessLevels : anonymousAccessLevels"
+                  :options="
+                    user.login === 'anonymous' ? anonymousAccessLevels :
+                    (user.role === 'noaccess' ? onlyRoleAccessLevels : accessLevels)"
                 />
               </div>
             </td>
@@ -454,6 +456,7 @@ import SearchParams from './SearchParams';
 interface AccessLevel {
   key: string;
   value: unknown;
+  type: string
 }
 
 interface PagedUsersListState {
@@ -732,6 +735,11 @@ export default defineComponent({
     anonymousAccessLevels() {
       return (this.accessLevels as AccessLevel[]).filter(
         (e) => e.key === 'noaccess' || e.key === 'view',
+      );
+    },
+    onlyRoleAccessLevels() {
+      return (this.accessLevels as AccessLevel[]).filter(
+        (e) => e.type === 'role',
       );
     },
   },
