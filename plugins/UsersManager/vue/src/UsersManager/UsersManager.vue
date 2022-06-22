@@ -223,13 +223,27 @@ export default defineComponent({
       }).then((usersResolved) => (
         usersResolved.filter((u) => u.role !== 'superuser').map((u) => u.login)
       )).then((userLogins) => {
-        const requests = userLogins.map((login) => ({
-          method: 'UsersManager.setUserAccess',
-          userLogin: login,
-          access: role,
-          idSites: this.searchParams.idSite,
-          ignoreSuperusers: 1,
-        }));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const type = this.accessLevels.filter((a: any) => a.key === role).map((a: any) => a.type);
+
+        let requests;
+        if (type.length && type[0] === 'capability') {
+          requests = userLogins.map((login) => ({
+            method: 'UsersManager.addCapabilities',
+            userLogin: login,
+            capabilities: role,
+            idSites: this.searchParams.idSite,
+            ignoreSuperusers: 1,
+          }));
+        } else {
+          requests = userLogins.map((login) => ({
+            method: 'UsersManager.setUserAccess',
+            userLogin: login,
+            access: role,
+            idSites: this.searchParams.idSite,
+            ignoreSuperusers: 1,
+          }));
+        }
 
         return AjaxHelper.fetch(requests, { createErrorNotification: true });
       }).catch(() => {
