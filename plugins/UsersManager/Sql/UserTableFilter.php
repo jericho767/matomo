@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Matomo - free/libre analytics platform
  *
@@ -7,7 +8,6 @@
  */
 
 namespace Piwik\Plugins\UsersManager\Sql;
-
 
 use Piwik\Common;
 use Piwik\Piwik;
@@ -46,7 +46,8 @@ class UserTableFilter
         }
 
         // can only filter by superuser if current user is a superuser
-        if ($this->filterByRole == 'superuser'
+        if (
+            $this->filterByRole == 'superuser'
             && !Piwik::hasUserSuperUserAccess()
         ) {
             $this->filterByRole = null;
@@ -93,7 +94,6 @@ class UserTableFilter
 
     private function getAccessSelectSqlCondition()
     {
-        $sql = '';
         $bind = [];
 
         switch ($this->filterByRole) {
